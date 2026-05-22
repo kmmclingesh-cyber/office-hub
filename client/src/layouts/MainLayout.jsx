@@ -2,19 +2,57 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 
-function MainLayout(){
+function MainLayout() {
 
 return(
 
-<div className="flex">
+<div
+className="
+min-h-screen
+bg-[#f8fafc]
+"
+>
+
+{/* Sidebar */}
 
 <Sidebar/>
 
-<div className="ml-64 flex-1 p-8 bg-gray-100 min-h-screen">
+
+{/* Main Area */}
+
+<div
+className="
+ml-[240px]
+min-h-screen
+px-8
+py-6
+"
+>
+
+{/* Navbar */}
+
+<div
+className="
+sticky
+top-0
+z-40
+bg-[#f8fafc]
+pb-6
+"
+>
 
 <Navbar/>
 
-<div className="mt-8">
+</div>
+
+
+{/* Content */}
+
+<div
+className="
+mt-2
+"
+>
 
 <Outlet/>
 

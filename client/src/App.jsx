@@ -1,5 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import RoleGuard from "./components/RoleGuard";
+
 import MainLayout from "./layouts/MainLayout";
 
 import Dashboard from "./pages/Dashboard";
@@ -20,54 +24,210 @@ return(
 
 <Routes>
 
+{/* ================= LOGIN ================= */}
+
 <Route
+path="/login"
+element={<Login/>}
+/>
+
+
+{/* ================= PROTECTED APP ================= */}
+
+<Route
+
 path="/"
-element={<MainLayout />}
+
+element={
+
+<ProtectedRoute>
+
+<MainLayout/>
+
+</ProtectedRoute>
+
+}
+
 >
+
+{/* Dashboard */}
 
 <Route
 index
 element={<Dashboard/>}
 />
 
+
+{/* Employees → Admin only */}
+
 <Route
+
 path="employees"
-element={<Employees/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin"
+]}
+>
+
+<Employees/>
+
+</RoleGuard>
+
+}
+
 />
 
+
+{/* Tasks → Admin + User */}
+
 <Route
+
 path="tasks"
-element={<Tasks/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin",
+"User"
+]}
+>
+
+<Tasks/>
+
+</RoleGuard>
+
+}
+
 />
 
+
+{/* Attendance → Admin + User */}
+
 <Route
+
 path="attendance"
-element={<Attendance/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin",
+"User"
+]}
+>
+
+<Attendance/>
+
+</RoleGuard>
+
+}
+
 />
 
+
+{/* Reports → Admin only */}
+
 <Route
+
 path="reports"
-element={<Reports/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin"
+]}
+>
+
+<Reports/>
+
+</RoleGuard>
+
+}
+
 />
+
+
+{/* Calendar */}
 
 <Route
 path="calendar"
 element={<CalendarPage/>}
 />
 
+
+{/* Time Tracking */}
+
 <Route
+
 path="time-tracking"
-element={<TimeTracking/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin",
+"User"
+]}
+>
+
+<TimeTracking/>
+
+</RoleGuard>
+
+}
+
 />
 
+
+{/* Leave */}
+
 <Route
+
 path="leave"
-element={<Leave/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin",
+"User"
+]}
+>
+
+<Leave/>
+
+</RoleGuard>
+
+}
+
 />
 
+
+{/* Settings → Admin only */}
+
 <Route
+
 path="settings"
-element={<Settings/>}
+
+element={
+
+<RoleGuard
+allowedRoles={[
+"Admin"
+]}
+>
+
+<Settings/>
+
+</RoleGuard>
+
+}
+
 />
 
 </Route>
@@ -76,7 +236,7 @@ element={<Settings/>}
 
 </BrowserRouter>
 
-)
+);
 
 }
 

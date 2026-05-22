@@ -1,85 +1,331 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login(){
+function Login() {
 
-const navigate=useNavigate();
+const navigate =
+useNavigate();
 
-const [email,setEmail]=useState("");
-const [password,setPassword]=useState("");
+const [loading,setLoading] =
+useState(false);
 
-function handleLogin(){
+const [showPassword,setShowPassword] =
+useState(false);
+
+const [formData,setFormData] =
+useState({
+
+email:"",
+password:"",
+role:"Admin"
+
+});
+
+
+function handleChange(e){
+
+setFormData({
+
+...formData,
+
+[e.target.name]:
+e.target.value
+
+});
+
+}
+
+
+async function login(){
 
 if(
-email==="admin@huboffice.in"
-&&
-password==="admin123"
+
+!formData.email.trim() ||
+!formData.password.trim()
+
 ){
 
-localStorage.setItem(
+alert(
+"Please fill all fields"
+);
+
+return;
+
+}
+
+try{
+
+setLoading(true);
+
+
+// Fake delay for better UX
+
+await new Promise(
+
+resolve=>
+
+setTimeout(
+resolve,
+1000
+)
+
+);
+
+
+sessionStorage.setItem(
 
 "user",
 
 JSON.stringify({
 
-name:"Admin",
-role:"admin"
+email:
+formData.email,
+
+role:
+formData.role
 
 })
 
 );
 
+
 navigate("/");
 
 }
-else{
+catch(error){
 
-alert("Invalid Credentials");
+console.log(error);
+
+alert(
+"Login failed ❌"
+);
+
+}
+finally{
+
+setLoading(false);
 
 }
 
 }
+
+
 
 return(
 
-<div className="min-h-screen flex justify-center items-center bg-gray-100">
+<div
+className="
+min-h-screen
+flex
+justify-center
+items-center
+bg-gray-100
+px-4
+"
+>
 
-<div className="bg-white p-8 rounded-xl shadow-lg w-[400px]">
+<div
+className="
+bg-white
+w-[450px]
+rounded-3xl
+shadow-2xl
+p-10
+"
+>
 
-<h1 className="text-3xl font-bold mb-2">
+<div className="text-center mb-8">
 
-Office.HuB
+<h1
+className="
+text-4xl
+font-bold
+"
+>
+
+Office.HuB 🚀
 
 </h1>
 
-<p className="text-gray-500 mb-6">
+<p
+className="
+text-gray-500
+mt-2
+"
+>
 
-Sign in to continue
+Office Management System
 
 </p>
 
-<input
-type="email"
-placeholder="Email"
-value={email}
-onChange={(e)=>setEmail(e.target.value)}
-className="w-full border p-3 rounded-xl mb-4"
-/>
+</div>
+
+
+
+<div className="space-y-5">
 
 <input
-type="password"
-placeholder="Password"
-value={password}
-onChange={(e)=>setPassword(e.target.value)}
-className="w-full border p-3 rounded-xl mb-6"
+
+name="email"
+
+placeholder="Email"
+
+value={formData.email}
+
+onChange={handleChange}
+
+className="
+w-full
+border
+p-4
+rounded-xl
+outline-none
+focus:ring-2
+focus:ring-blue-500
+"
+
 />
+
+
+<div className="relative">
+
+<input
+
+type={
+showPassword
+?
+"text"
+:
+"password"
+}
+
+name="password"
+
+placeholder="Password"
+
+value={formData.password}
+
+onChange={handleChange}
+
+className="
+w-full
+border
+p-4
+rounded-xl
+outline-none
+focus:ring-2
+focus:ring-blue-500
+"
+
+/>
+
 
 <button
-onClick={handleLogin}
-className="w-full bg-blue-600 text-white p-3 rounded-xl"
+
+type="button"
+
+onClick={()=>
+
+setShowPassword(
+
+!showPassword
+
+)
+
+}
+
+className="
+absolute
+right-4
+top-4
+"
+
 >
 
-Login
+{
+
+showPassword
+
+?
+
+"🙈"
+
+:
+
+"👁️"
+
+}
+
+</button>
+
+</div>
+
+
+
+<select
+
+name="role"
+
+value={formData.role}
+
+onChange={handleChange}
+
+className="
+w-full
+border
+p-4
+rounded-xl
+"
+
+>
+
+<option>
+
+Admin
+
+</option>
+
+<option>
+
+User
+
+</option>
+
+</select>
+
+
+
+<button
+
+onClick={login}
+
+disabled={loading}
+
+className="
+w-full
+bg-blue-600
+text-white
+p-4
+rounded-xl
+hover:bg-blue-700
+disabled:bg-gray-400
+"
+
+>
+
+{
+
+loading
+
+?
+
+"Signing In..."
+
+:
+
+"Login"
+
+}
 
 </button>
 
@@ -87,7 +333,9 @@ Login
 
 </div>
 
-)
+</div>
+
+);
 
 }
 

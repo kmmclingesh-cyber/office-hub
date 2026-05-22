@@ -2,114 +2,239 @@ import { NavLink } from "react-router-dom";
 
 function Sidebar() {
 
+const user = JSON.parse(
+
+sessionStorage.getItem(
+"user"
+)
+
+) || {
+
+email:"Guest",
+role:"User"
+
+};
+
+
 const menuItems=[
 
 {
 name:"Dashboard",
+path:"/",
 icon:"🏠",
-path:"/"
+roles:["Admin","User"]
 },
 
 {
 name:"Employees",
-icon:"👥",
-path:"/employees"
-},
-
-{
-name:"Leave",
-icon:"🌴",
-path:"/leave"
-},
-
-{
-name:"Calendar",
-icon:"📅",
-path:"/calendar"
-},
-
-{
-name:"Time Tracking",
-icon:"⏱",
-path:"/time-tracking"
+path:"/employees",
+icon:"👨‍💼",
+roles:["Admin"]
 },
 
 {
 name:"Tasks",
-icon:"💼",
-path:"/tasks"
+path:"/tasks",
+icon:"✅",
+roles:["Admin","User"]
 },
 
 {
 name:"Attendance",
+path:"/attendance",
 icon:"📅",
-path:"/attendance"
+roles:["Admin","User"]
 },
 
 {
 name:"Reports",
+path:"/reports",
 icon:"📊",
-path:"/reports"
+roles:["Admin"]
+},
+
+{
+name:"Calendar",
+path:"/calendar",
+icon:"🗓️",
+roles:["Admin","User"]
+},
+
+{
+name:"Time Tracking",
+path:"/time-tracking",
+icon:"⏰",
+roles:["Admin","User"]
+},
+
+{
+name:"Leave",
+path:"/leave",
+icon:"🌴",
+roles:["Admin","User"]
 },
 
 {
 name:"Settings",
+path:"/settings",
 icon:"⚙️",
-path:"/settings"
+roles:["Admin"]
 }
 
 ];
 
-return (
 
-<div className="w-64 h-screen bg-gray-950 text-white fixed left-0 top-0 p-6">
+const visibleMenu=
 
-<h1 className="text-3xl font-bold mb-12">
+menuItems.filter(
 
-Office.HuB
+item=>
+
+item.roles.includes(
+user.role
+)
+
+);
+
+
+return(
+
+<div
+className="
+h-screen
+w-[240px]
+bg-white
+border-r
+border-gray-200
+fixed
+left-0
+top-0
+flex
+flex-col
+justify-between
+px-5
+py-7
+shadow-sm
+"
+>
+
+<div>
+
+{/* Logo */}
+
+<div className="mb-10">
+
+<h1
+className="
+text-3xl
+font-bold
+text-gray-800
+"
+>
+
+Office.HuB 🚀
 
 </h1>
 
-<div className="space-y-3">
+</div>
+
+
+
+{/* Menu */}
+
+<div className="space-y-2">
 
 {
-menuItems.map((item)=>(
+
+visibleMenu.map(item=>(
 
 <NavLink
-key={item.name}
+
+key={item.path}
+
 to={item.path}
 
 className={({isActive})=>
 
-`flex items-center gap-4 p-4 rounded-xl transition-all duration-300
+`
 
-${isActive
-? "bg-blue-600"
-: "hover:bg-gray-800"
-}`
+flex
+items-center
+gap-4
+px-4
+py-4
+rounded-2xl
+transition-all
+duration-300
+
+${
+
+isActive
+
+?
+
+"bg-blue-50 text-blue-600 font-semibold shadow-sm"
+
+:
+
+"text-gray-600 hover:bg-gray-100 hover:text-black"
+
+}
+
+`
 
 }
 
 >
 
-<span>
+<span
+className="
+text-xl
+"
+>
+
 {item.icon}
+
 </span>
 
-<span>
+<span
+className="
+text-[15px]
+"
+>
+
 {item.name}
+
 </span>
 
 </NavLink>
 
 ))
+
 }
 
 </div>
 
 </div>
 
-)
+
+{/* Footer */}
+
+<div
+className="
+text-center
+text-sm
+text-gray-400
+"
+>
+
+Office.HuB v1.0
+
+</div>
+
+</div>
+
+);
 
 }
 
