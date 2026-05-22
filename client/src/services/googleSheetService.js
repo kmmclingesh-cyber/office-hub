@@ -1,36 +1,149 @@
-import axios from "axios";
-
-const API=
-"https://script.google.com/macros/s/AKfycbx-i1tncKvKi4Q_G4p0EFUejF15J0B6fBO9C3uz0WEe6pXtkBDBo6stzC9aFg_b0wnn/exec";
+const API =
+"https://script.google.com/macros/s/AKfycbzyX2jAbgDrzbRo-Y4QgTkk_kNwX_w-9JrrVy_BA7Kq7g6GmLSbvUTrMBr8VOghhw0m/exec";
 
 
-export const getEmployees=
-async()=>{
+// =========================
+// GET
+// =========================
 
-const response=
-await axios.get(API);
+export const getEmployees = async()=>{
 
-return response.data;
+try{
+
+const response =
+await fetch(API);
+
+return await response.json();
+
+}
+catch(error){
+
+console.log(
+"GET ERROR:",
+error
+);
+
+return [];
+
+}
 
 };
 
 
-export const addEmployee=
-async(data)=>{
+// =========================
+// ADD
+// =========================
 
-await axios.get(API,{
+export const addEmployee = async(data)=>{
 
-params:{
+try{
+
+const formData =
+new FormData();
+
+formData.append(
+"payload",
+JSON.stringify({
 
 action:"add",
+...data
 
-ID:data.ID,
-Name:data.Name,
-Department:data.Department,
-Email:data.Email
+})
+);
+
+const response =
+await fetch(API,{
+
+method:"POST",
+
+body:formData
+
+});
+
+return await response.json();
+
+}
+catch(error){
+
+console.log(
+"ADD ERROR:",
+error
+);
+
+throw error;
 
 }
 
+};
+
+
+
+
+// =========================
+// DELETE
+// =========================
+
+export const deleteEmployee =
+async(id)=>{
+
+const formData =
+new FormData();
+
+formData.append(
+"payload",
+JSON.stringify({
+
+action:"delete",
+ID:id
+
+})
+);
+
+const response =
+await fetch(API,{
+
+method:"POST",
+
+body:formData
+
 });
+
+return await response.json();
+
+};
+
+
+
+
+// =========================
+// EDIT
+// =========================
+
+export const editEmployee =
+async(data)=>{
+
+const formData =
+new FormData();
+
+formData.append(
+"payload",
+JSON.stringify({
+
+action:"edit",
+...data
+
+})
+);
+
+const response =
+await fetch(API,{
+
+method:"POST",
+
+body:formData
+
+});
+
+return await response.json();
 
 };
